@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <body>
+        <a href="logout.html" style=" padding-left:1000px;"><button>logout</button></a><br><br>
+        <button id="user_list">list of user</button><br><br>
+        <table id="resultData">
+        <tr>
+            <th>email id</th>
+        </tr>
+
+        </table>
+
+
+                <script>
+                    document.getElementById("resultData");
+                </script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+                <script>
+                $(document).ready(function(){
+                    $(".check").click(function(){
+                        alert("check");
+                    });
+                    $("#user_list").click(function(){
+                        console.clear();
+                   // $("form").submit(function(e){
+               // e.preventDefault();
+                        //alert("Value: " + $("#emailid").val());
+                        //var postData = { emailid:$("#emailid").val(), password:$("#password").val()};
+                        var saveData = $.ajax({
+                            type: 'GET',
+                            url: "http://localhost:3000/user/profileget",
+                           // data: postData,
+                           // dataType: "json",
+                            success: function(resultData, textStatus, xhr) { 
+                                //console.log("in success");
+                                console.log('--->>'+textStatus);
+                                //var res="http://localhost:3000/user/profile.html";
+                                console.log(resultData.message[0]._id);
+                                console.log(JSON.stringify(resultData));
+                                var v=JSON.stringify(resultData);
+                                var data="";
+                                for(var i=0;i<resultData.message.length;i++){
+                                    data+='<tr>';
+                                    data+='<td>'+resultData.message[i].emailid+'</td>';
+                                    data+='<td><button class="button test" id='+resultData.message[i].emailid+'>'+"remove"+'</button></td>';
+                                    data+='</tr>'
+                                    console.log(resultData.message[i].emailid);
+                                }
+                                    
+                                $("#resultData").append(data);
+
+
+
+                                $(".test").click(function(){
+                             //$("#button").submit(function(e){
+                          //e.preventDefault();
+                         alert("check");
+                        //alert("Value: " + $("#emailid").val());
+                        var postData = { emailid:$(this).attr('id')};
+                        alert($(this).attr('id'));
+                        
+                        var saveData = $.ajax({
+                            type: 'POST',
+                            url: "http://localhost:3000/user/remove",
+                            data: postData,
+                            dataType: "json",
+                            success: function(resultData, textStatus, xhr) { 
+                                //console.log("in success");
+                                console.log('--->>'+textStatus);
+
+                               var res="http://localhost:3000/user/profile";
+                               console.log(resultData);
+                                $("#resultData").html(resultData);
+                                window.location=res;
+                             },
+                            error: function(xhr, textStatus,exception) {
+                               // console("in complete");
+                              // $("#resultData").html('<b>'+xhr+'</b>');
+                              $("#resultData").html('<span class="TQGan"><svg xmlns="https://www.w3.org/2000/svg" aria-hidden="true" focusable="false" width="16px" height="16px" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span> '+xhr);
+                      
+                             // alert(xhr.responseJSON.message);
+                            } 
+                        });
+                    });
+
+
+
+                                   // document.getElementById("resultData").innerHTML =;
+                                //$("#resultData").html(data);
+                               // $("#resultData1").html(xhr);
+                                //window.location=res;
+                             },
+                            error: function(xhr, textStatus,exception) {
+                               // console("in complete");
+                              // $("#resultData").html('<b>'+xhr+'</b>');
+                              $("#resultData").html('<span class="TQGan"><svg xmlns="https://www.w3.org/2000/svg" aria-hidden="true" focusable="false" width="16px" height="16px" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"></path><path d="M0 0h24v24H0z" fill="none"></path></svg></span> '+xhr.responseJSON.message);
+                      
+                             // alert(xhr.responseJSON.message);
+                            } 
+                        });
+                    });
+
+                
+
+                });
+                </script>
+            
+
+    </body>
+</html>
